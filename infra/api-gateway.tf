@@ -134,729 +134,12 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
             }
           }
         },
-        "/swagger-ui/index" : {
-          "get" : {
-            "operationId" : "Swagger",
-            "responses" : {
-              "200" : {
-                "description" : "200 response",
-                "headers" : {
-                  "Access-Control-Allow-Origin" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  }
-                },
-                "content" : {}
-              }
-            },
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "uri" : "http://${local.load_balancer_dns}/swagger-ui/index.html",
-              "responses" : {
-                "default" : {
-                  "statusCode" : "200",
-                  "responseParameters" : {
-                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
-                  }
-                }
-              },
-              "passthroughBehavior" : "when_no_match",
-              "type" : "http"
-            }
-          }
-        },
-        "/products/{id}" : {
+        "/users" : {
           "get" : {
             "tags" : [
-              "product-controller"
+              "user-controller"
             ],
-            "operationId" : "findProductByIdAndName",
-            "parameters" : [
-              {
-                "name" : "id",
-                "in" : "path",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "type",
-                "in" : "query",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/FullProductResponse"
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_produto'",
-                "integration.request.path.id" : "method.request.path.id"
-              },
-              "payloadFormatVersion" : "1.0",
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/products/{id}"
-            }
-          },
-          "put" : {
-            "tags" : [
-              "product-controller"
-            ],
-            "operationId" : "updateProduct",
-            "parameters" : [
-              {
-                "name" : "id",
-                "in" : "path",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "requestBody" : {
-              "content" : {
-                "application/json" : {
-                  "schema" : {
-                    "$ref" : "#/components/schemas/UpdateProductRequest"
-                  }
-                }
-              },
-              "required" : true
-            },
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/FullProductResponse"
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "PUT",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_produto'",
-                "integration.request.path.id" : "method.request.path.id"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/products/{id}"
-            }
-          },
-          "delete" : {
-            "tags" : [
-              "product-controller"
-            ],
-            "operationId" : "deleteProduct",
-            "parameters" : [
-              {
-                "name" : "id",
-                "in" : "path",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success"
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "DELETE",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_produto'",
-                "integration.request.path.id" : "method.request.path.id"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/products/{id}"
-            }
-          }
-        },
-        "/products" : {
-          "get" : {
-            "tags" : [
-              "product-controller"
-            ],
-            "operationId" : "findProducts",
-            "parameters" : [
-              {
-                "name" : "type",
-                "in" : "query",
-                "required" : false,
-                "schema" : {
-                  "type" : "string",
-                  "enum" : [
-                    "SANDWICH",
-                    "SIDE_DISH",
-                    "DRINK"
-                  ]
-                }
-              },
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "type" : "array",
-                      "items" : {
-                        "$ref" : "#/components/schemas/FullProductResponse"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_produto'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/products"
-            }
-          },
-          "post" : {
-            "tags" : [
-              "product-controller"
-            ],
-            "operationId" : "createProduct",
-            "requestBody" : {
-              "content" : {
-                "application/json" : {
-                  "schema" : {
-                    "$ref" : "#/components/schemas/CreateProductRequest"
-                  }
-                }
-              },
-              "required" : true
-            },
-            "parameters" : [
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/FullProductResponse"
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "POST",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_produto'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/products"
-            }
-          }
-        },
-        "/orders" : {
-          "get" : {
-            "tags" : [
-              "order-controller"
-            ],
-            "operationId" : "getOrders",
-            "parameters" : [
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "type" : "array",
-                      "items" : {
-                        "$ref" : "#/components/schemas/GetOrderResponse"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_pedido'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/orders"
-            }
-          },
-          "post" : {
-            "tags" : [
-              "order-controller"
-            ],
-            "operationId" : "createOrder",
-            "requestBody" : {
-              "content" : {
-                "application/json" : {
-                  "schema" : {
-                    "$ref" : "#/components/schemas/CreateOrderRequest"
-                  }
-                }
-              },
-              "required" : true
-            },
-            "parameters" : [
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/CreateOrderResponse"
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "POST",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_orquestrador'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/orders"
-            }
-          }
-        },
-        "/customers" : {
-          "get" : {
-            "tags" : [
-              "customer-controller"
-            ],
-            "operationId" : "getCustomerByCpf",
+            "operationId" : "getuserByCpf",
             "parameters" : [
               {
                 "name" : "cpf",
@@ -867,7 +150,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "cpf_cliente",
+                "name" : "email_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -875,7 +158,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "senha_cliente",
+                "name" : "senha_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -935,27 +218,27 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               }
             },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
+            "security" : [{ "lambda_authorizer" : [] }],
             "x-amazon-apigateway-integration" : {
               "httpMethod" : "GET",
               "payloadFormatVersion" : "1.0",
               "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_cliente'"
+                "integration.request.header.microsservice" : "'ms_usuario'"
               },
               "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/customers"
+              "uri" : "http://${local.load_balancer_dns}/users"
             }
           },
           "post" : {
             "tags" : [
-              "customer-controller"
+              "user-controller"
             ],
-            "operationId" : "registerCustomer",
+            "operationId" : "registeruser",
             "requestBody" : {
               "content" : {
                 "application/json" : {
                   "schema" : {
-                    "$ref" : "#/components/schemas/RegisterCustomerRequest"
+                    "$ref" : "#/components/schemas/RegisteruserRequest"
                   }
                 }
               },
@@ -963,7 +246,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
             },
             "parameters" : [
               {
-                "name" : "cpf_cliente",
+                "name" : "email_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -971,7 +254,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "senha_cliente",
+                "name" : "senha_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -1025,7 +308,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 "content" : {
                   "application/json" : {
                     "schema" : {
-                      "$ref" : "#/components/schemas/RegisterCustomerResponse"
+                      "$ref" : "#/components/schemas/RegisteruserResponse"
                     }
                   }
                 }
@@ -1035,19 +318,19 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
               "httpMethod" : "POST",
               "payloadFormatVersion" : "1.0",
               "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_cliente'"
+                "integration.request.header.microsservice" : "'ms_usuario'"
               },
               "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/customers"
+              "uri" : "http://${local.load_balancer_dns}/users"
             }
           }
         },
-        "/customers/{id}" : {
+        "/users/{id}" : {
           "delete" : {
             "tags" : [
-              "customer-controller"
+              "user-controller"
             ],
-            "operationId" : "deactivateCustomer",
+            "operationId" : "deactivateuser",
             "parameters" : [
               {
                 "name" : "id",
@@ -1058,7 +341,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "cpf_cliente",
+                "name" : "email_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -1066,7 +349,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "senha_cliente",
+                "name" : "senha_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -1124,24 +407,24 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 "description" : ""
               }
             },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
+            "security" : [{ "lambda_authorizer" : [] }],
             "x-amazon-apigateway-integration" : {
               "httpMethod" : "DELETE",
               "payloadFormatVersion" : "1.0",
               "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_cliente'",
-                "integration.request.header.cpf_cliente" : "method.request.header.cpf_cliente",
-                "integration.request.header.senha_cliente" : "method.request.header.senha_cliente",
+                "integration.request.header.microsservice" : "'ms_usuario'",
+                "integration.request.header.email_usuario" : "method.request.header.email_usuario",
+                "integration.request.header.senha_usuario" : "method.request.header.senha_usuario",
                 "integration.request.path.id" : "method.request.path.id"
               },
               "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/customers/{id}"
+              "uri" : "http://${local.load_balancer_dns}/users/{id}"
             }
           }
         }
-        "/customers/confirmation" : {
+        "/users/confirmation" : {
           "post" : {
-            "tags" : ["customer-controller"], "operationId" : "confirmSignUp",
+            "tags" : ["user-controller"], "operationId" : "confirmSignUp",
             "requestBody" : {
               "content" : {
                 "application/json" : { "schema" : { "$ref" : "#/components/schemas/ConfirmSignUpRequest" } }
@@ -1149,7 +432,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
             },
             "parameters" : [
               {
-                "name" : "cpf_cliente",
+                "name" : "email_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -1157,7 +440,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
                 }
               },
               {
-                "name" : "senha_cliente",
+                "name" : "senha_usuario",
                 "in" : "header",
                 "required" : true,
                 "schema" : {
@@ -1183,229 +466,16 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
               "httpMethod" : "POST",
               "payloadFormatVersion" : "1.0",
               "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_cliente'"
+                "integration.request.header.microsservice" : "'ms_usuario'"
               },
               "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/customers/confirmation"
+              "uri" : "http://${local.load_balancer_dns}/users/confirmation"
             }
           }
         },
-        "/payments" : {
-          "get" : {
-            "tags" : [
-              "payment-controller"
-            ],
-            "operationId" : "findAll",
-            "parameters" : [
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "type" : "array",
-                      "items" : {
-                        "$ref" : "#/components/schemas/PaymentResponse"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.header.microsservice" : "'ms_pagamento'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/payments"
-            }
-          }
-        },
-        "/orders/{orderId}/payment-status" : {
-          "get" : {
-            "tags" : [
-              "order-controller"
-            ],
-            "operationId" : "getOrderPaymentStatus",
-            "parameters" : [
-              {
-                "name" : "orderId",
-                "in" : "path",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "cpf_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              {
-                "name" : "senha_cliente",
-                "in" : "header",
-                "required" : true,
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            ],
-            "responses" : {
-              "400" : {
-                "description" : "Bad Request",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "403" : {
-                "description" : "Forbidden",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "404" : {
-                "description" : "Not Found",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "500" : {
-                "description" : "Internal Server Error",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/ExceptionDetails"
-                    }
-                  }
-                }
-              },
-              "200" : {
-                "description" : "Success",
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/GetOrderPaymentStatusResponse"
-                    }
-                  }
-                }
-              }
-            },
-            "security" : [{ "lambda_authorizer_cpf" : [] }],
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "payloadFormatVersion" : "1.0",
-              "requestParameters" : {
-                "integration.request.path.orderId" : "method.request.path.orderId",
-                "integration.request.header.microsservice" : "'ms_pedido'"
-              },
-              "type" : "HTTP_PROXY",
-              "uri" : "http://${local.load_balancer_dns}/payment-status"
-            }
-          }
-        }
       },
       "components" : {
         "schemas" : {
-          "UpdateProductRequest" : {
-            "required" : [
-              "description",
-              "name",
-              "price",
-              "type"
-            ],
-            "type" : "object",
-            "properties" : {
-              "name" : {
-                "maxLength" : 2147483647,
-                "minLength" : 3,
-                "type" : "string"
-              },
-              "price" : {
-                "type" : "number"
-              },
-              "description" : {
-                "type" : "string"
-              },
-              "type" : {
-                "type" : "string"
-              }
-            }
-          },
           "CustomError" : {
             "type" : "object",
             "properties" : {
@@ -1446,111 +516,12 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
               "errors" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/CustomError"
+                  "$ref" : "#/components/schemas/userror"
                 }
               }
             }
           },
-          "FullProductResponse" : {
-            "type" : "object",
-            "properties" : {
-              "id" : {
-                "type" : "string"
-              },
-              "name" : {
-                "type" : "string"
-              },
-              "price" : {
-                "type" : "number"
-              },
-              "description" : {
-                "type" : "string"
-              },
-              "type" : {
-                "type" : "string"
-              },
-              "createdAt" : {
-                "type" : "string",
-                "format" : "date-time"
-              },
-              "updatedAt" : {
-                "type" : "string",
-                "format" : "date-time"
-              }
-            }
-          },
-          "CreateProductRequest" : {
-            "required" : [
-              "description",
-              "name",
-              "price",
-              "type"
-            ],
-            "type" : "object",
-            "properties" : {
-              "name" : {
-                "maxLength" : 2147483647,
-                "minLength" : 3,
-                "type" : "string"
-              },
-              "price" : {
-                "type" : "number"
-              },
-              "description" : {
-                "type" : "string"
-              },
-              "type" : {
-                "type" : "string"
-              }
-            }
-          },
-          "CreateOrderRequest" : {
-            "type" : "object",
-            "properties" : {
-              "customerId" : {
-                "type" : "string"
-              },
-              "items" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/Item"
-                }
-              }
-            }
-          },
-          "Item" : {
-            "type" : "object",
-            "properties" : {
-              "idProduct" : {
-                "type" : "string"
-              },
-              "quantity" : {
-                "type" : "integer",
-                "format" : "int32"
-              },
-              "itemValue" : {
-                "type" : "number"
-              },
-              "totalItemValue" : {
-                "type" : "number"
-              }
-            }
-          },
-          "CreateOrderResponse" : {
-            "type" : "object",
-            "properties" : {
-              "customerId" : {
-                "type" : "string"
-              },
-              "items" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/Item"
-                }
-              }
-            }
-          },
-          "RegisterCustomerRequest" : {
+          "RegisteruserRequest" : {
             "type" : "object",
             "properties" : {
               "name" : {
@@ -1568,7 +539,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
               }
             }
           },
-          "RegisterCustomerResponse" : {
+          "RegisteruserResponse" : {
             "type" : "object",
             "properties" : {
               "id" : {
@@ -1580,119 +551,17 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
             "required" : ["code", "cpf"],
             "type" : "object",
             "properties" : { "cpf" : { "type" : "string" }, "code" : { "type" : "string" } }
-          },
-          "GetOrderResponse" : {
-            "type" : "object",
-            "properties" : {
-              "id" : {
-                "type" : "string"
-              },
-              "items" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/Item"
-                }
-              },
-              "totalValue" : {
-                "type" : "number"
-              },
-              "createdAt" : {
-                "type" : "string",
-                "format" : "date-time"
-              },
-              "updatedAt" : {
-                "type" : "string",
-                "format" : "date-time"
-              },
-              "status" : {
-                "type" : "string",
-                "enum" : [
-                  "READY",
-                  "IN_PREPARATION",
-                  "RECEIVED",
-                  "COMPLETED"
-                ]
-              },
-              "paymentStatus" : {
-                "type" : "string",
-                "enum" : [
-                  "PENDING",
-                  "APPROVED",
-                  "REJECTED"
-                ]
-              }
-            }
-          },
-          "GetOrderPaymentStatusResponse" : {
-            "type" : "object",
-            "properties" : {
-              "paymentStatus" : {
-                "type" : "string",
-                "enum" : [
-                  "PENDING",
-                  "APPROVED",
-                  "REJECTED"
-                ]
-              }
-            }
-          },
-          "GetClientResponse" : {
-            "type" : "object",
-            "properties" : {
-              "id" : {
-                "type" : "string"
-              },
-              "name" : {
-                "type" : "string"
-              },
-              "birthday" : {
-                "type" : "string",
-                "format" : "date"
-              },
-              "cpf" : {
-                "type" : "string"
-              },
-              "email" : {
-                "type" : "string"
-              },
-              "creationTimestamp" : {
-                "type" : "string",
-                "format" : "date-time"
-              },
-              "updateTimestamp" : {
-                "type" : "string",
-                "format" : "date-time"
-              }
-            }
-          },
-          "PaymentResponse" : {
-            "type" : "object",
-            "properties" : {
-              "id" : {
-                "type" : "string"
-              },
-              "orderId" : {
-                "type" : "string"
-              },
-              "status" : {
-                "type" : "string"
-              },
-              "createAt" : {
-                "type" : "string",
-                "format" : "date-time"
-              }
-            }
           }
         },
         "securitySchemes" : {
-          "lambda_authorizer_cpf" : {
+          "lambda_authorizer" : {
             "type" : "apiKey",
             "name" : "auth",
             "in" : "header",
             "x-amazon-apigateway-authtype" : "custom",
             "x-amazon-apigateway-authorizer" : {
               "type" : "request",
-              "identitySource" : "method.request.header.cpf_cliente, method.request.header.senha_cliente",
+              "identitySource" : "method.request.header.email_usuario, method.request.header.senha_usuario",
               "authorizerCredentials" : var.lab_role_arn,
               "authorizerUri" : local.lambda_authorize_uri,
               "authorizerResultTtlInSeconds" : 0
