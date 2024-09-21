@@ -7,200 +7,200 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
   name        = "api_gateway_fiap_postech"
   description = "API Rest para agendamento de consultas médicas executada no Hackathon da FIAP PosTech Arquitetura de Sistemas"
 
-  body = jsonencode(
-    {
-      "openapi" : "3.0.1",
-      "info" : {
-        "title" : "Hackathon FIAP PosTech",
-        "description" : "API Rest para agendamento de consultas médicas executada no Hackathon da FIAP PosTech Arquitetura de Sistemas",
-        "version" : "v1"
-      },
-      "servers" : [
-        {
-          "url" : "http://${local.load_balancer_dns}",
-          "description" : "Generated server url"
-        }
-      ],
-      "paths" : {
-        "/" : {
-          "get" : {
-            "operationId" : "Get",
-            "responses" : {
-              "200" : {
-                "description" : "200 response",
-                "headers" : {
-                  "Access-Control-Allow-Origin" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  }
-                },
-                "content" : {}
-              }
-            },
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "uri" : "http://${local.load_balancer_dns}/",
-              "responses" : {
-                "default" : {
-                  "statusCode" : "200",
-                  "responseParameters" : {
-                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
-                  }
-                }
-              },
-              "passthroughBehavior" : "when_no_match",
-              "type" : "http"
-            }
-          },
-          "options" : {
-            "responses" : {
-              "200" : {
-                "description" : "200 response",
-                "headers" : {
-                  "Access-Control-Allow-Origin" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  },
-                  "Access-Control-Allow-Methods" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  },
-                  "Access-Control-Allow-Headers" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  }
-                },
-                "content" : {
-                  "application/json" : {
-                    "schema" : {
-                      "$ref" : "#/components/schemas/Empty"
-                    }
-                  }
-                }
-              }
-            },
-            "x-amazon-apigateway-integration" : {
-              "responses" : {
-                "default" : {
-                  "statusCode" : "200",
-                  "responseParameters" : {
-                    "method.response.header.Access-Control-Allow-Methods" : "'GET,OPTIONS'",
-                    "method.response.header.Access-Control-Allow-Headers" : "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
-                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
-                  }
-                }
-              },
-              "requestTemplates" : {
-                "application/json" : "{\"statusCode\": 200}"
-              },
-              "passthroughBehavior" : "when_no_match",
-              "type" : "mock"
-            }
-          }
-        },
-        "/actuator/health" : {
-          "get" : {
-            "operationId" : "Actuator",
-            "responses" : {
-              "200" : {
-                "description" : "200 response",
-                "headers" : {
-                  "Access-Control-Allow-Origin" : {
-                    "schema" : {
-                      "type" : "string"
-                    }
-                  }
-                },
-                "content" : {}
-              }
-            },
-            "x-amazon-apigateway-integration" : {
-              "httpMethod" : "GET",
-              "uri" : "http://${local.load_balancer_dns}/actuator/health",
-              "responses" : {
-                "default" : {
-                  "statusCode" : "200",
-                  "responseParameters" : {
-                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
-                  }
-                }
-              },
-              "passthroughBehavior" : "when_no_match",
-              "type" : "http"
-            }
-          }
-        }
-      },
-      "components" : {
-        "schemas" : {
-          "CustomError" : {
-            "type" : "object",
-            "properties" : {
-              "message" : {
-                "type" : "string"
-              },
-              "field" : {
-                "type" : "string"
-              },
-              "attemptedValue" : {
-                "type" : "object"
-              }
-            }
-          },
-          "ExceptionDetails" : {
-            "type" : "object",
-            "properties" : {
-              "type" : {
-                "type" : "string"
-              },
-              "title" : {
-                "type" : "string"
-              },
-              "code" : {
-                "type" : "string"
-              },
-              "detail" : {
-                "type" : "string"
-              },
-              "status" : {
-                "type" : "integer",
-                "format" : "int32"
-              },
-              "date" : {
-                "type" : "string",
-                "format" : "date-time"
-              },
-              "errors" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/CustomError"
-                }
-              }
-            }
-          }
-        },
-        "securitySchemes" : {
-          "lambda_authorizer" : {
-            "type" : "apiKey",
-            "name" : "auth",
-            "in" : "header",
-            "x-amazon-apigateway-authtype" : "custom",
-            "x-amazon-apigateway-authorizer" : {
-              "type" : "request",
-              "identitySource" : "method.request.header.email_usuario, method.request.header.senha_usuario",
-              "authorizerCredentials" : var.lab_role_arn,
-              "authorizerUri" : local.lambda_authorize_uri,
-              "authorizerResultTtlInSeconds" : 0
-            }
-          }
-        }
-      }
-    }
-  )
+#  body = jsonencode(
+#    {
+#      "openapi" : "3.0.1",
+#      "info" : {
+#        "title" : "Hackathon FIAP PosTech",
+#        "description" : "API Rest para agendamento de consultas médicas executada no Hackathon da FIAP PosTech Arquitetura de Sistemas",
+#        "version" : "v1"
+#      },
+#      "servers" : [
+#        {
+#          "url" : "http://${local.load_balancer_dns}",
+#          "description" : "Generated server url"
+#        }
+#      ],
+#      "paths" : {
+#        "/" : {
+#          "get" : {
+#            "operationId" : "Get",
+#            "responses" : {
+#              "200" : {
+#                "description" : "200 response",
+#                "headers" : {
+#                  "Access-Control-Allow-Origin" : {
+#                    "schema" : {
+#                      "type" : "string"
+#                    }
+#                  }
+#                },
+#                "content" : {}
+#              }
+#            },
+#            "x-amazon-apigateway-integration" : {
+#              "httpMethod" : "GET",
+#              "uri" : "http://${local.load_balancer_dns}/",
+#              "responses" : {
+#                "default" : {
+#                  "statusCode" : "200",
+#                  "responseParameters" : {
+#                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
+#                  }
+#                }
+#              },
+#              "passthroughBehavior" : "when_no_match",
+#              "type" : "http"
+#            }
+#          },
+#          "options" : {
+#            "responses" : {
+#              "200" : {
+#                "description" : "200 response",
+#                "headers" : {
+#                  "Access-Control-Allow-Origin" : {
+#                    "schema" : {
+#                      "type" : "string"
+#                    }
+#                  },
+#                  "Access-Control-Allow-Methods" : {
+#                    "schema" : {
+#                      "type" : "string"
+#                    }
+#                  },
+#                  "Access-Control-Allow-Headers" : {
+#                    "schema" : {
+#                      "type" : "string"
+#                    }
+#                  }
+#                },
+#                "content" : {
+#                  "application/json" : {
+#                    "schema" : {
+#                      "$ref" : "#/components/schemas/Empty"
+#                    }
+#                  }
+#                }
+#              }
+#            },
+#            "x-amazon-apigateway-integration" : {
+#              "responses" : {
+#                "default" : {
+#                  "statusCode" : "200",
+#                  "responseParameters" : {
+#                    "method.response.header.Access-Control-Allow-Methods" : "'GET,OPTIONS'",
+#                    "method.response.header.Access-Control-Allow-Headers" : "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+#                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
+#                  }
+#                }
+#              },
+#              "requestTemplates" : {
+#                "application/json" : "{\"statusCode\": 200}"
+#              },
+#              "passthroughBehavior" : "when_no_match",
+#              "type" : "mock"
+#            }
+#          }
+#        },
+#        "/actuator/health" : {
+#          "get" : {
+#            "operationId" : "Actuator",
+#            "responses" : {
+#              "200" : {
+#                "description" : "200 response",
+#                "headers" : {
+#                  "Access-Control-Allow-Origin" : {
+#                    "schema" : {
+#                      "type" : "string"
+#                    }
+#                  }
+#                },
+#                "content" : {}
+#              }
+#            },
+#            "x-amazon-apigateway-integration" : {
+#              "httpMethod" : "GET",
+#              "uri" : "http://${local.load_balancer_dns}/actuator/health",
+#              "responses" : {
+#                "default" : {
+#                  "statusCode" : "200",
+#                  "responseParameters" : {
+#                    "method.response.header.Access-Control-Allow-Origin" : "'*'"
+#                  }
+#                }
+#              },
+#              "passthroughBehavior" : "when_no_match",
+#              "type" : "http"
+#            }
+#          }
+#        }
+#      },
+#      "components" : {
+#        "schemas" : {
+#          "CustomError" : {
+#            "type" : "object",
+#            "properties" : {
+#              "message" : {
+#                "type" : "string"
+#              },
+#              "field" : {
+#                "type" : "string"
+#              },
+#              "attemptedValue" : {
+#                "type" : "object"
+#              }
+#            }
+#          },
+#          "ExceptionDetails" : {
+#            "type" : "object",
+#            "properties" : {
+#              "type" : {
+#                "type" : "string"
+#              },
+#              "title" : {
+#                "type" : "string"
+#              },
+#              "code" : {
+#                "type" : "string"
+#              },
+#              "detail" : {
+#                "type" : "string"
+#              },
+#              "status" : {
+#                "type" : "integer",
+#                "format" : "int32"
+#              },
+#              "date" : {
+#                "type" : "string",
+#                "format" : "date-time"
+#              },
+#              "errors" : {
+#                "type" : "array",
+#                "items" : {
+#                  "$ref" : "#/components/schemas/CustomError"
+#                }
+#              }
+#            }
+#          }
+#        },
+#        "securitySchemes" : {
+#          "lambda_authorizer" : {
+#            "type" : "apiKey",
+#            "name" : "auth",
+#            "in" : "header",
+#            "x-amazon-apigateway-authtype" : "custom",
+#            "x-amazon-apigateway-authorizer" : {
+#              "type" : "request",
+#              "identitySource" : "method.request.header.email_usuario, method.request.header.senha_usuario",
+#              "authorizerCredentials" : var.lab_role_arn,
+#              "authorizerUri" : local.lambda_authorize_uri,
+#              "authorizerResultTtlInSeconds" : 0
+#            }
+#          }
+#        }
+#      }
+#    }
+#  )
 
   endpoint_configuration {
     types = ["REGIONAL"]
