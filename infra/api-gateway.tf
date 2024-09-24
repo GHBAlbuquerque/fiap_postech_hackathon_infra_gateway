@@ -3,7 +3,7 @@ locals {
   lambda_authorize_uri = "arn:aws:apigateway:${var.region}:lambda:path/2024-04-22/functions/${var.lambda_arn}/invocations"
 }
 
-resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
+resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
   name        = "api_gateway_fiap_postech"
   description = "API Rest para agendamento de consultas médicas executada no Hackathon da FIAP PosTech Arquitetura de Sistemas"
 
@@ -1605,10 +1605,10 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech" {
 }
 
 resource "aws_api_gateway_deployment" "postech_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.api_gateway_fiap_postech.id
+  rest_api_id = aws_api_gateway_rest_api.api_gateway_fiap_postech_hackathon.id
 
   triggers = {
-    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.api_gateway_fiap_postech.body))
+    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.api_gateway_fiap_postech_hackathon.body))
   }
 
   lifecycle {
@@ -1618,11 +1618,11 @@ resource "aws_api_gateway_deployment" "postech_deployment" {
 
 resource "aws_api_gateway_stage" "postech_stage" {
   deployment_id = aws_api_gateway_deployment.postech_deployment.id
-  rest_api_id   = aws_api_gateway_rest_api.api_gateway_fiap_postech.id
+  rest_api_id   = aws_api_gateway_rest_api.api_gateway_fiap_postech_hackathon.id
   stage_name    = "postech_stage"
 }
 
 output "api_gateway_id" {
-  value = aws_api_gateway_rest_api.api_gateway_fiap_postech.id
+  value = aws_api_gateway_rest_api.api_gateway_fiap_postech_hackathon.id
 }
 
