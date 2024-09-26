@@ -392,11 +392,6 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
                 }
               }
             },
-            "security": [
-              {
-                "lambda_authorizer": []
-              }
-            ],
             "x-amazon-apigateway-integration": {
               "httpMethod": "POST",
               "requestParameters": {
