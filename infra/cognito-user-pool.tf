@@ -33,7 +33,7 @@ resource "aws_cognito_user_pool_client" "client" {
 
 resource "aws_cognito_user" "first_user" {
   user_pool_id = aws_cognito_user_pool.user_group_postech_fiap.id
-  username     = "93678719023"
+  username     = "aneleh.annavoig@gmail.com"
   password     = "FIAPauth123_"
 
   attributes = {
