@@ -428,7 +428,7 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
               }
             ],
             "x-amazon-apigateway-integration": {
-              "httpMethod": "GET",
+              "httpMethod": "PUT",
               "requestParameters": {
                 "integration.request.header.microsservice": "'ms_agendamento'",
                 "integration.request.path.id": "method.request.path.id",
