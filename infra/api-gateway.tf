@@ -533,24 +533,6 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
               "doctor-controller"
             ],
             "operationId": "registerDoctor",
-            "parameters": [
-              {
-                "name": "user_email",
-                "in": "header",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "user_pword",
-                "in": "header",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
             "requestBody": {
               "content": {
                 "application/json": {
@@ -603,11 +585,6 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
                 }
               }
             },
-            "security": [
-              {
-                "lambda_authorizer": []
-              }
-            ],
             "x-amazon-apigateway-integration": {
               "httpMethod": "POST",
               "requestParameters": {
@@ -1005,24 +982,6 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
               "patient-controller"
             ],
             "operationId": "registerPatient",
-            "parameters": [
-              {
-                "name": "user_email",
-                "in": "header",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "user_pword",
-                "in": "header",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
             "requestBody": {
               "content": {
                 "application/json": {
@@ -1075,11 +1034,6 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
                 }
               }
             },
-            "security": [
-              {
-                "lambda_authorizer": []
-              }
-            ],
             "x-amazon-apigateway-integration": {
               "httpMethod": "POST",
               "requestParameters": {
