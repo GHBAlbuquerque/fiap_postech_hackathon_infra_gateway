@@ -326,11 +326,117 @@ resource "aws_api_gateway_rest_api" "api_gateway_fiap_postech_hackathon" {
             "x-amazon-apigateway-integration": {
               "httpMethod": "POST",
               "requestParameters": {
-                "integration.request.header.microsservice": "'ms_agendamento'"
+                "integration.request.header.microsservice": "'ms_agendamento'",
+                "integration.request.header.user_email": "method.request.header.user_email"
               },
               "payloadFormatVersion": "1.0",
               "type": "HTTP_PROXY",
               "uri": "http://${local.load_balancer_dns}/appointments"
+            }
+          }
+        },
+        "/appointments/{id}": {
+          "put": {
+            "tags": [
+              "appointment-controller"
+            ],
+            "operationId": "updateStatus",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "status",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "SCHEDULED",
+                    "CANCELED",
+                    "COMPLETED"
+                  ]
+                }
+              },
+              {
+                "name": "user_email",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "user_pword",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ExceptionDetails"
+                    }
+                  }
+                }
+              },
+              "204": {
+                "description": "No Content",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ExceptionDetails"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ExceptionDetails"
+                    }
+                  }
+                }
+              }
+            }
+            "security": [
+              {
+                "lambda_authorizer": []
+              }
+            ],
+            "x-amazon-apigateway-integration": {
+              "httpMethod": "GET",
+              "requestParameters": {
+                "integration.request.header.microsservice": "'ms_agendamento'",
+                "integration.request.path.id": "method.request.path.id",
+                "integration.request.header.user_email": "method.request.header.user_email"
+              },
+              "payloadFormatVersion": "1.0",
+              "type": "HTTP_PROXY",
+              "uri": "http://${local.load_balancer_dns}/appointments/{id}"
             }
           }
         },
